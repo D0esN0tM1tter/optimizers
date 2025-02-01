@@ -21,4 +21,5 @@ Unlike first-order methods, these algorithms use second-order derivatives (Hessi
 
 - **Newton's Method** – Uses second-order derivative information to find optimal points faster, but requires computing the Hessian matrix.  
 - **L-BFGS Method** – A memory-efficient approximation of second-order optimization, widely used for large-scale problems.  
-- **Natural Gradient Descent** – Adjusts the update direction based on the geometry of the parameter space for more efficient learning.  
+- **Natural Gradient Descent** – Adjusts the update direction based on the geometry of the parameter space for more efficient learning.
+- **Trust Region** 
