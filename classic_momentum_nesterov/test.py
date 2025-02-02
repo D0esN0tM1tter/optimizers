@@ -35,7 +35,6 @@ def visualize_2D_function(f: callable,  history : list , optimizer : str = 'Nest
     plt.title(f'Optimization path of : {optimizer}')
     plt.legend(loc='best')
     plt.colorbar()
-    plt.show()
 
 
 
@@ -89,14 +88,34 @@ def test_1() :
 
     optimizer_1.visualize_convergence(optimizer='GD' , color='blue') 
     optimizer_2.visualize_convergence(optimizer='GD momentum' , color = 'orange') 
-    optimizer_3.visualize_convergence(optimizer='NAG' , color='green') 
+    optimizer_3.visualize_convergence(optimizer='NAG' , color='green')
+    plt.savefig('plots/convergence_comparison.png' , dpi = 300)
     plt.show()
 
 
+def test_2() : 
 
+    # initial guess :
+    x_0 = np.array([10 , 10])
+
+    # classic gradient descent : 
+    optimizer = GDOptimizer(
+        f= f , 
+        grad_f= gradf,
+        learning_rate=0.01 ,
+        momentum= 0.9 ,
+        nesterov=True 
+    )
+
+    optimizer.optimize(x_0) 
+    visualize_2D_function(f , optimizer.history , optimizer='Nesterov Accelerated Gradient')
+    plt.savefig('plots/nag_path.png' , dpi = 300) 
+    plt.show()
+
+  
 
 
 
 
 if __name__ == '__main__':
-   test_1()
+   test_2()

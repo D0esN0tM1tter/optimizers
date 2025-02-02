@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{amsmath}  % For aligned environment
+\usepackage{amssymb}  % For mathematical symbols
+\usepackage{geometry} % For adjusting page margins
+\geometry{a4paper, margin=1in} % Set margins
+
+\begin{document}
+
+\section*{SGD with Momentum and Nesterov Acceleration}
+
+The Stochastic Gradient Descent (SGD) algorithm with Momentum and Nesterov Acceleration is a widely used optimization method in machine learning. Momentum helps accelerate convergence by accumulating a velocity vector in the direction of consistent gradients, while Nesterov acceleration improves stability and convergence by looking ahead in the direction of the velocity vector.
+
+\[
+\begin{aligned}
+    & \rule{110mm}{0.4pt} \\
+    & \textbf{input} : \gamma \text{ (lr)}, \: \theta_0 \text{ (params)}, \: f(\theta) \text{ (objective)}, \: \lambda \text{ (weight decay)}, \\
+    & \hspace{13mm} \mu \text{ (momentum)}, \: \tau \text{ (dampening)}, \: \textit{nesterov}, \: \textit{maximize} \\[-1.ex]
+    & \rule{110mm}{0.4pt} \\
+    & \textbf{for} \: t=1 \: \textbf{to} \: \ldots \: \textbf{do} \\
+    & \hspace{5mm} g_t \leftarrow \nabla_{\theta} f_t (\theta_{t-1}) \\
+    & \hspace{5mm} \textbf{if} \: \lambda \neq 0 \\
+    & \hspace{10mm} g_t \leftarrow g_t + \lambda \theta_{t-1} \\
+    & \hspace{5mm} \textbf{if} \: \mu \neq 0 \\
+    & \hspace{10mm} \textbf{if} \: t > 1 \\
+    & \hspace{15mm} \textbf{b}_t \leftarrow \mu \textbf{b}_{t-1} + (1-\tau) g_t \\
+    & \hspace{10mm} \textbf{else} \\
+    & \hspace{15mm} \textbf{b}_t \leftarrow g_t \\
+    & \hspace{10mm} \textbf{if} \: \textit{nesterov} \\
+    & \hspace{15mm} g_t \leftarrow g_t + \mu \textbf{b}_t \\
+    & \hspace{10mm} \textbf{else} \\
+    & \hspace{15mm} g_t \leftarrow \textbf{b}_t \\
+    & \hspace{5mm} \textbf{if} \: \textit{maximize} \\
+    & \hspace{10mm} \theta_t \leftarrow \theta_{t-1} + \gamma g_t \\
+    & \hspace{5mm} \textbf{else} \\
+    & \hspace{10mm} \theta_t \leftarrow \theta_{t-1} - \gamma g_t \\
+    & \rule{110mm}{0.4pt} \\[-1.ex]
+    & \textbf{return} \: \theta_t \\[-1.ex]
+    & \rule{110mm}{0.4pt} \\[-1.ex]
+\end{aligned}
+\]
+
+\section*{Explanation of Parameters and Variables}
+
+\begin{itemize}
+    \item \(\gamma\) (\textbf{lr}): The learning rate. It determines the step size of the parameter updates. A smaller learning rate leads to slower but more stable convergence.
+    
+    \item \(\theta_0\) (\textbf{params}): The initial parameters of the model. These are the values that the optimization algorithm will adjust to minimize the objective function.
+    
+    \item \(f(\theta)\) (\textbf{objective}): The objective function (or loss function) that the algorithm aims to minimize. It is a function of the parameters \(\theta\).
+    
+    \item \(\lambda\) (\textbf{weight decay}): The weight decay coefficient. It adds a penalty proportional to the squared magnitude of the parameters to the objective function, encouraging smaller parameter values.
+    
+    \item \(\mu\) (\textbf{momentum}): The momentum coefficient. It accelerates the optimization process by adding a fraction of the previous update to the current update. If \(\mu = 0\), momentum is not used.
+    
+    \item \(\tau\) (\textbf{dampening}): The dampening coefficient for momentum. It reduces the effect of momentum by scaling the current gradient before adding it to the velocity vector.
+    
+    \item \textbf{nesterov}: A boolean flag indicating whether to use Nesterov accelerated gradient (NAG). If enabled, the algorithm adjusts the gradient computation to look ahead in the direction of the momentum vector.
+    
+    \item \textbf{maximize}: A boolean flag indicating whether to maximize the objective function instead of minimizing it. If enabled, the algorithm updates parameters in the direction of the gradient (ascent) rather than against it (descent).
+    
+    \item \(g_t\): The gradient of the objective function with respect to the parameters at time step \(t\).
+    
+    \item \(\textbf{b}_t\): The momentum buffer (velocity vector) at time step \(t\). It accumulates the gradients over time, scaled by the momentum coefficient \(\mu\).
+    
+    \item \(\theta_t\): The updated parameters at time step \(t\).
+\end{itemize}
+
+\end{document}

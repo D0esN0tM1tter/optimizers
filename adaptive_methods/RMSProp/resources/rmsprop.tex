@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage{amsmath}  % For aligned environment
+\usepackage{amssymb}  % For mathematical symbols
+\usepackage{geometry} % For adjusting page margins
+\geometry{a4paper, margin=1in} % Set margins
+
+\begin{document}
+
+\section*{RMSProp Algorithm}
+
+The RMSProp (Root Mean Square Propagation) algorithm is an adaptive learning rate optimization method designed to improve the convergence of gradient-based optimization. Below is the algorithm along with explanations for each parameter and variable.
+
+\[
+\begin{aligned}
+    & \rule{110mm}{0.4pt} \\
+    & \textbf{input} : \alpha \text{ (alpha)}, \: \gamma \text{ (lr)}, \: \theta_0 \text{ (params)}, \: f(\theta) \text{ (objective)} \\
+    & \hspace{13mm} \lambda \text{ (weight decay)}, \: \mu \text{ (momentum)}, \: centered, \: \epsilon \text{ (epsilon)} \\
+    & \textbf{initialize} : v_0 \leftarrow 0 \text{ (square average)}, \: \textbf{b}_0 \leftarrow 0 \text{ (buffer)}, \: g^{ave}_0 \leftarrow 0 \\[-1.ex]
+    & \rule{110mm}{0.4pt} \\
+    & \textbf{for} \: t=1 \: \textbf{to} \: \ldots \: \textbf{do} \\
+    & \hspace{5mm} g_t \leftarrow \nabla_{\theta} f_t (\theta_{t-1}) \\
+    & \hspace{5mm} if \: \lambda \neq 0 \\
+    & \hspace{10mm} g_t \leftarrow g_t + \lambda \theta_{t-1} \\
+    & \hspace{5mm} v_t \leftarrow \alpha v_{t-1} + (1 - \alpha) g^2_t \hspace{8mm} \\
+    & \hspace{5mm} \tilde{v_t} \leftarrow v_t \\
+    & \hspace{5mm} if \: centered \\
+    & \hspace{10mm} g^{ave}_t \leftarrow g^{ave}_{t-1} \alpha + (1-\alpha) g_t \\
+    & \hspace{10mm} \tilde{v_t} \leftarrow \tilde{v_t} - \big(g^{ave}_{t} \big)^2 \\
+    & \hspace{5mm} if \: \mu > 0 \\
+    & \hspace{10mm} \textbf{b}_t \leftarrow \mu \textbf{b}_{t-1} + g_t / \big(\sqrt{\tilde{v_t}} + \epsilon \big) \\
+    & \hspace{10mm} \theta_t \leftarrow \theta_{t-1} - \gamma \textbf{b}_t \\
+    & \hspace{5mm} else \\
+    & \hspace{10mm} \theta_t \leftarrow \theta_{t-1} - \gamma g_t / \big(\sqrt{\tilde{v_t}} + \epsilon \big) \hspace{3mm} \\
+    & \rule{110mm}{0.4pt} \\[-1.ex]
+    & \textbf{return} \: \theta_t \\[-1.ex]
+    & \rule{110mm}{0.4pt} \\[-1.ex]
+\end{aligned}
+\]
+
+\section*{Explanation of Parameters and Variables}
+
+\begin{itemize}
+    \item \(\alpha\) (\textbf{alpha}): The decay rate for the moving average of squared gradients. It controls how quickly the past gradients are forgotten. Typical values are between 0.9 and 0.99.
+    
+    \item \(\gamma\) (\textbf{lr}): The learning rate. It determines the step size of the parameter updates. A smaller learning rate leads to slower but more stable convergence.
+    
+    \item \(\theta_0\) (\textbf{params}): The initial parameters of the model. These are the values that the optimization algorithm will adjust to minimize the objective function.
+    
+    \item \(f(\theta)\) (\textbf{objective}): The objective function (or loss function) that the algorithm aims to minimize. It is a function of the parameters \(\theta\).
+    
+    \item \(\lambda\) (\textbf{weight decay}): The weight decay coefficient. It adds a penalty proportional to the squared magnitude of the parameters to the objective function, encouraging smaller parameter values.
+    
+    \item \(\mu\) (\textbf{momentum}): The momentum coefficient. It accelerates the optimization process by adding a fraction of the previous update to the current update. If \(\mu = 0\), momentum is not used.
+    
+    \item \textbf{centered}: A boolean flag indicating whether to use the centered version of RMSProp. If enabled, the algorithm subtracts the mean of the gradients from the squared gradients.
+    
+    \item \(\epsilon\) (\textbf{epsilon}): A small constant added to the denominator to improve numerical stability. It prevents division by zero.
+    
+    \item \(v_0\) (\textbf{square average}): The initial value for the moving average of squared gradients. It is typically initialized to zero.
+    
+    \item \(\textbf{b}_0\) (\textbf{buffer}): The initial value for the momentum buffer. It is typically initialized to zero.
+    
+    \item \(g^{ave}_0\): The initial value for the moving average of gradients (used in the centered version). It is typically initialized to zero.
+    
+    \item \(g_t\): The gradient of the objective function with respect to the parameters at time step \(t\).
+    
+    \item \(v_t\): The moving average of squared gradients at time step \(t\).
+    
+    \item \(\tilde{v_t}\): The adjusted moving average of squared gradients (used in the centered version).
+    
+    \item \(g^{ave}_t\): The moving average of gradients (used in the centered version).
+    
+    \item \(\textbf{b}_t\): The momentum buffer at time step \(t\).
+    
+    \item \(\theta_t\): The updated parameters at time step \(t\).
+\end{itemize}
+
+\end{document}
